@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     
-        [SerializeField] private Transform cameratarget;
+        [SerializeField] private Transform cameraTarget;
         private Vector3 pos;
         private void Awake()
         {
@@ -19,9 +19,9 @@ public class CameraController : MonoBehaviour
 
         void Update()
         {
-            pos = cameratarget.position;
+            pos = cameraTarget.position;
             pos.z = -15f;
-            pos.y = cameratarget.position.y + 4f;
+            pos.y = cameraTarget.position.y + 4f;
             transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime + 0.05f);
         }
     }
