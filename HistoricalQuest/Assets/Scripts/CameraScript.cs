@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    [SerializeField] private Player player;
+    [SerializeField] private Transform cameratarget;
+    private Vector3 pos;
+    private void Awake()
+    {
+
+    }
+    void Start()
+    {
+
+    }
+
 
     void Update()
     {
-        if (player.transform.position.x < transform.position.x - 5)
-        {
-            transform.position = new Vector3(player.transform.position.x, transform.position.y, -10);
-        }
-        else if (player.transform.position.x > transform.position.x + 5)
-        {
-            transform.position = new Vector3(player.transform.position.x, transform.position.y, -10);
-        }
+        pos = cameratarget.position;
+        pos.z = -10f;
+        transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime + 0.05f);
     }
 }
+
