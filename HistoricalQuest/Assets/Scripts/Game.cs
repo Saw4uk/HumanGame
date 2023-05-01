@@ -11,7 +11,15 @@ public class Game : MonoBehaviour
     private int currentEra;
     private float answerCoordX;
     private int eraCounter;
-    public bool isWaitingAnswer;
+    private bool isWaitingAnswer;
+    private bool isAnswerGetted;
+
+    public bool IsWaitingAnswer
+    {
+        get => isWaitingAnswer;
+        set => isWaitingAnswer = value;
+    }
+
     private Victorina.Question currentQuestion;
 
     
@@ -27,7 +35,7 @@ public class Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isWaitingAnswer)
+        if (!IsWaitingAnswer)
         {
             if (player.transform.position.x - answerCoordX >= 20)
             {
@@ -35,7 +43,7 @@ public class Game : MonoBehaviour
                 interfaceController.SetQuestionActive(true);
                 interfaceController.ChangeQuestion(currentQuestion);
                 player.canMove = false;
-                isWaitingAnswer = true;
+                IsWaitingAnswer = true;
                 answerCoordX = player.transform.position.x;
                 eraCounter += 1;
             }
@@ -45,7 +53,7 @@ public class Game : MonoBehaviour
                 currentEra += 1;
             }
         }
-        else 
+        else if (isAnswerGetted)
         {
             var ismoved = false;
             if (Input.GetKey(KeyCode.D))
@@ -64,7 +72,8 @@ public class Game : MonoBehaviour
                 ChangeImageColor(interfaceController.answer3, Color.white, true);
                 ChangeImageColor(interfaceController.answer4, Color.white, true);
                 isWaitingAnswer= false;
-                Debug.Log(1);
+                isAnswerGetted = false;
+                interfaceController.SetQuestionActive(false);
             }
         }
     }
@@ -77,7 +86,6 @@ public class Game : MonoBehaviour
     {
         if (button.gameObject.GetComponentInChildren<Text>().text == currentQuestion.rightAnswer)
         {
-            player.Hp += 1;
             button.gameObject.GetComponent<Image>().color = Color.green;
         }
         else
@@ -95,12 +103,11 @@ public class Game : MonoBehaviour
         player.transform.position = new Vector3(player.transform.position.x + 0.1f, player.transform.position.y,
             player.transform.position.z);
         player.canMove = true;
+        isAnswerGetted = true;
         foreach (var btn in otherButtons)
         {
             btn.interactable= false;
         }
         button.interactable = false;
-
     }
-
 }

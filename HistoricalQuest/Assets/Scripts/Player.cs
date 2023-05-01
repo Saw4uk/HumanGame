@@ -7,20 +7,24 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
-    public int hp;
+    private int hp = 5;
     public bool canMove = true;
     private bool iswalking = false;
     
     [SerializeField]private Animator animator;
     public static Player Instance { get; set; }
-
+    public event Action hpChanged; 
 
     public int Hp
     {
         get => hp;
-        set => hp = value;
+        set
+        {
+            hp = value;
+            hpChanged.Invoke();
+        }
     }
-   
+
     void Update()
     {
         if (canMove)

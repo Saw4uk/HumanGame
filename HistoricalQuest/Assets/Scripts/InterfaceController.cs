@@ -28,8 +28,15 @@ public class InterfaceController : MonoBehaviour
         answer3.onClick.AddListener(OnButton3Click);
         answer4.onClick.AddListener(OnButton4Click); 
         rnd = new System.Random();
+        player.hpChanged += OnHpChanged;
+        hp.text = player.Hp.ToString();
     }
 
+    private void OnHpChanged()
+    {
+        hp.text = player.Hp.ToString();
+    }
+    
     public void ChangeQuestion(Victorina.Question question)
     {
         questionText.text = question.textOfQuestion;
@@ -57,16 +64,6 @@ public class InterfaceController : MonoBehaviour
         }
     } 
     
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
-    
-    void FixedUpdate()
-    {
-        hp.text = player.hp.ToString();
-    }
 
     void OnButton1Click()
     {
