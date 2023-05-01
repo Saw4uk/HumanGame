@@ -10,6 +10,7 @@ public class InterfaceController : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private Text questionText;
     [SerializeField] private Text hp;
+    [SerializeField] private Text answers;
     [SerializeField] public Button answer1;
     [SerializeField] public Button answer2;
     [SerializeField] public Button answer3;
@@ -29,12 +30,18 @@ public class InterfaceController : MonoBehaviour
         answer4.onClick.AddListener(OnButton4Click); 
         rnd = new System.Random();
         player.hpChanged += OnHpChanged;
+        player.answersChanged += OnAnswersChanged;
         hp.text = player.Hp.ToString();
+        answers.text = "0";
     }
 
     private void OnHpChanged()
     {
         hp.text = player.Hp.ToString();
+    }
+    private void OnAnswersChanged()
+    {
+        answers.text = player.RightAnswers.ToString();
     }
     
     public void ChangeQuestion(Victorina.Question question)

@@ -87,6 +87,7 @@ public class Game : MonoBehaviour
         if (button.gameObject.GetComponentInChildren<Text>().text == currentQuestion.rightAnswer)
         {
             button.gameObject.GetComponent<Image>().color = Color.green;
+            player.RightAnswers += 1;
         }
         else
         {
