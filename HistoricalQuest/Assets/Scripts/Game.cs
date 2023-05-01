@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Game : MonoBehaviour
     private int eraCounter;
     public bool isWaitingAnswer;
     private Victorina.Question currentQuestion;
+
     
     //Settings
         private int questionsOnEraAmount = 2;
@@ -27,7 +29,7 @@ public class Game : MonoBehaviour
     {
         if (!isWaitingAnswer)
         {
-            if (player.transform.position.x - answerCoordX >= 10)
+            if (player.transform.position.x - answerCoordX >= 20)
             {
                 currentQuestion = Victorina.GetQuestion(currentEra);
                 interfaceController.SetQuestionActive(true);
@@ -43,22 +45,62 @@ public class Game : MonoBehaviour
                 currentEra += 1;
             }
         }
+        else 
+        {
+            var ismoved = false;
+            if (Input.GetKey(KeyCode.D))
+            {
+              
+                ismoved= true;
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                ismoved= true;
+            }
+            if (ismoved) 
+            { 
+                ChangeImageColor(interfaceController.answer1, Color.white, true);
+                ChangeImageColor(interfaceController.answer2, Color.white, true);
+                ChangeImageColor(interfaceController.answer3, Color.white, true);
+                ChangeImageColor(interfaceController.answer4, Color.white, true);
+                isWaitingAnswer= false;
+                Debug.Log(1);
+            }
+        }
     }
-    
-    public void CheckAnswer(string str)
+    private void ChangeImageColor(Button button, Color32 color, bool interactable)
     {
-        if (str == currentQuestion.rightAnswer)
+        button.interactable = interactable;
+        button.GetComponent<Image>().color = color;
+    }
+    public void CheckAnswer(Button button, Button[] otherButtons)
+    {
+        if (button.gameObject.GetComponentInChildren<Text>().text == currentQuestion.rightAnswer)
         {
             player.Hp += 1;
+            button.gameObject.GetComponent<Image>().color = Color.green;
         }
         else
         {
             player.Hp -= 1;
+            button.gameObject.GetComponent<Image>().color = Color.red;
+            foreach (var btn in otherButtons)
+            {
+                if (btn.gameObject.GetComponentInChildren<Text>().text == currentQuestion.rightAnswer)
+                {
+                    btn.gameObject.GetComponent<Image>().color = Color.green;
+                }
+            }
         }
         player.transform.position = new Vector3(player.transform.position.x + 0.1f, player.transform.position.y,
             player.transform.position.z);
-        isWaitingAnswer = false;
         player.canMove = true;
-        interfaceController.SetQuestionActive(false);
+        foreach (var btn in otherButtons)
+        {
+            btn.interactable= false;
+        }
+        button.interactable = false;
+
     }
+
 }

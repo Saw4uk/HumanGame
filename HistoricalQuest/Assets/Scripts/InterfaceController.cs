@@ -10,12 +10,17 @@ public class InterfaceController : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private Text questionText;
     [SerializeField] private Text hp;
-    [SerializeField] private Button answer1;
-    [SerializeField] private Button answer2;
-    [SerializeField] private Button answer3;
-    [SerializeField] private Button answer4;
+    [SerializeField] public Button answer1;
+    [SerializeField] public Button answer2;
+    [SerializeField] public Button answer3;
+    [SerializeField] public Button answer4;
     [SerializeField] private Game game;
+    [SerializeField] private Image background;
     private System.Random rnd;
+    private Vector3 questionPos;
+
+
+
     void Awake()
     {
         answer1.onClick.AddListener(OnButton1Click);
@@ -55,7 +60,7 @@ public class InterfaceController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
     
     void FixedUpdate()
@@ -65,22 +70,22 @@ public class InterfaceController : MonoBehaviour
 
     void OnButton1Click()
     {
-        game.CheckAnswer(answer1.GetComponentInChildren<Text>().text);
+        game.CheckAnswer(answer1, new Button[] {answer2,answer3,answer4});
     }
     
     void OnButton2Click()
     {
-        game.CheckAnswer(answer2.GetComponentInChildren<Text>().text);
+        game.CheckAnswer(answer2, new Button[] { answer1, answer3, answer4 });
     }
     
     void OnButton3Click()
     {
-        game.CheckAnswer(answer3.GetComponentInChildren<Text>().text);
+        game.CheckAnswer(answer3, new Button[] { answer2, answer1, answer4 });
     }
     
     private void OnButton4Click()
     {
-        game.CheckAnswer(answer4.GetComponentInChildren<Text>().text);
+        game.CheckAnswer(answer4, new Button[] { answer2, answer3, answer1 });
     }
 
     public void SetQuestionActive(bool set)
@@ -90,6 +95,7 @@ public class InterfaceController : MonoBehaviour
         answer2.gameObject.SetActive(set);
         answer3.gameObject.SetActive(set);
         answer4.gameObject.SetActive(set);
+        background.gameObject.SetActive(set);
     }
 }
 

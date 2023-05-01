@@ -49,11 +49,11 @@ namespace DefaultNamespace
         public static readonly Question[] ZeroEraQuestions =
         {
             new Question
-            ("Тестовый вопрос",
-                "Правильный ответ",
-                "ГЫЫЫ",
-                "БЫЫЫЫ",
-                "МЫЫЫ"),
+            ("Кирилл и Мефодий создают славянскую письменность - глаголицу",
+                "863",
+                "879",
+                "859",
+                "867"),
             new Question
             ("Тестовый вопрос2",
                 "Правильный ответ",

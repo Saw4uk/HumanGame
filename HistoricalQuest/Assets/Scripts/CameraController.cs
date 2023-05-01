@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
         {
             pos = cameraTarget.position;
             pos.z = -15f;
-            pos.y = cameraTarget.position.y + 4f;
+            pos.y = cameraTarget.position.y + 5.3f;
             transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime + 0.05f);
         }
     }
