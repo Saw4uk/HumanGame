@@ -8,12 +8,14 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     private int hp = 5;
+    private int rightAnswers = 0;
     public bool canMove = true;
     private bool iswalking = false;
     
     [SerializeField]private Animator animator;
     public static Player Instance { get; set; }
     public event Action hpChanged; 
+    public event Action answersChanged; 
 
     public int Hp
     {
@@ -22,6 +24,15 @@ public class Player : MonoBehaviour
         {
             hp = value;
             hpChanged.Invoke();
+        }
+    }
+
+    public int RightAnswers
+    {
+        get => rightAnswers;
+        set  {
+            rightAnswers = value;
+            answersChanged.Invoke();
         }
     }
 
