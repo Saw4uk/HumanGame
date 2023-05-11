@@ -24,7 +24,7 @@ public class Game : MonoBehaviour
 
     
     //Settings
-        private int questionsOnEraAmount = 2;
+        private int questionsOnEraAmount = 3;
         private int maxEra = 1;
     //
     void Start()
@@ -37,7 +37,7 @@ public class Game : MonoBehaviour
     {
         if (!IsWaitingAnswer)
         {
-            if (player.transform.position.x - answerCoordX >= 20)
+            if (player.transform.position.x - answerCoordX >= 25)
             {
                 currentQuestion = Victorina.GetQuestion(currentEra);
                 interfaceController.SetQuestionActive(true);
