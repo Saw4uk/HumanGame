@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DefaultNamespace;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +10,27 @@ public class Game : MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private InterfaceController interfaceController;
+    [SerializeField] private GameOverPanelLogic gameOverPanelLogic;
+    private static Dictionary<int, int> dict = new ();
     private int currentEra;
     private float answerCoordX;
     private int eraCounter;
     private bool isWaitingAnswer;
     private bool isAnswerGetted;
+    private bool isGameOver = true;
+
+    public bool IsGameOver
+    {
+        get => isGameOver;
+        set
+        {
+            isGameOver = value;
+            if (value)
+            {
+                EndGame();
+            }
+        } 
+    }
 
     public bool IsWaitingAnswer
     {
@@ -25,16 +43,28 @@ public class Game : MonoBehaviour
     
     //Settings
         private int questionsOnEraAmount = 3;
-        private int maxEra = 1;
+        private int maxEra = 2;
     //
-    void Start()
+    void Awake()
     {
-        
+        Victorina.GameOver += delegate
+        {
+            SetDefaults();
+            IsGameOver = true;
+        };
+        player.hpChanged+= delegate
+        {
+            if (player.Hp == 0)
+            {
+                IsGameOver = true;
+            }
+        };
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(isGameOver) return;
         if (!IsWaitingAnswer)
         {
             if (player.transform.position.x - answerCoordX >= 25)
@@ -51,6 +81,7 @@ public class Game : MonoBehaviour
             if (eraCounter == questionsOnEraAmount && currentEra != maxEra)
             {
                 currentEra += 1;
+                eraCounter = 0;
             }
         }
         else if (isAnswerGetted)
@@ -58,7 +89,6 @@ public class Game : MonoBehaviour
             var ismoved = false;
             if (Input.GetKey(KeyCode.D))
             {
-              
                 ismoved= true;
             }
             else if (Input.GetKey(KeyCode.A))
@@ -77,6 +107,40 @@ public class Game : MonoBehaviour
             }
         }
     }
+
+    public void StartGame()
+    {
+        isGameOver = false;
+    }
+
+    private void EndGame()
+    {
+        gameOverPanelLogic.gameObject.SetActive(true);
+        var vek = dict.OrderBy(x=> x.Value).ToArray().FirstOrDefault();
+        var str = $"Ваша слабость - {ParseVek(vek.Key)} век, вы допустили в нем наибольшее количество ошибок - {vek.Value}." +
+                  $" Вы ответили правильно ответили на {player.RightAnswers} вопросов из {questionsOnEraAmount * (eraCounter+1)}";
+        gameOverPanelLogic.DrawExit(str);
+    }
+
+    private string ParseVek(int vek)
+    {
+        switch (vek)
+        {
+            case 1:
+                return "I";
+            case 2:
+                return "II";
+            default:
+                return "";
+        }
+    }
+    
+    private void SetDefaults()
+    {
+        currentEra = 0;
+        eraCounter = 0;
+    }
+    
     private void ChangeImageColor(Button button, Color32 color, bool interactable)
     {
         button.interactable = interactable;
@@ -91,6 +155,15 @@ public class Game : MonoBehaviour
         }
         else
         {
+            if (dict.ContainsKey(currentQuestion.century))
+            {
+                dict[currentQuestion.century] += 1;
+            }
+            else
+            {
+                dict[currentQuestion.century] = 1;
+            }
+            
             player.Hp -= 1;
             button.gameObject.GetComponent<Image>().color = Color.red;
             foreach (var btn in otherButtons)

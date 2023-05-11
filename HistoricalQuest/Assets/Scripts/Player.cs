@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     private int rightAnswers = 0;
     public bool canMove = true;
     private bool iswalking = false;
+    [SerializeField] private const float SPEED = 0.05f;
+    
     
     [SerializeField]private Animator animator;
     public static Player Instance { get; set; }
@@ -43,13 +45,13 @@ public class Player : MonoBehaviour
             var deltaX = 0f;
             if (Input.GetKey(KeyCode.D))
             {
-                deltaX += 0.05f;
+                deltaX += SPEED;
                 iswalking = true;
                 transform.localScale = new Vector2(1,1);
             }
             else if (Input.GetKey(KeyCode.A))
             {
-                deltaX -= 0.05f;
+                deltaX -= SPEED;
                 iswalking = true;
                 transform.localScale = new Vector2(-1, 1);
             }

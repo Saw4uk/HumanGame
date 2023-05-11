@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 
 namespace DefaultNamespace
@@ -26,6 +28,7 @@ namespace DefaultNamespace
             }
         }
         private static List<Question> gotQuestions=new List<Question>();
+        public static event Action GameOver;
 
         public static Question GetQuestion(int era)
         {
@@ -38,12 +41,21 @@ namespace DefaultNamespace
                 case 1:
                     array = FirstEraQuestions;
                     break;
+                case 2:
+                    array = SecondEraQuestions;
+                    break;
             }
 
             var x = GetRandomQuestion(array);
             while (gotQuestions.Contains(x))
             {
-                x= GetRandomQuestion(array);
+                x = GetRandomQuestion(array);
+                if(gotQuestions.Count(x => SecondEraQuestions.Contains(x)) == array.Length)
+                {
+                    Console.WriteLine("Игра пройдена");
+                    gotQuestions = new List<Question>();
+                    GameOver.Invoke();
+                }
             }
             gotQuestions.Add(x);
             return x;
@@ -97,6 +109,28 @@ namespace DefaultNamespace
                 "10 лет",
                 "11 лет",
                 "5 лет", 16),
+
+        };
+        public static readonly Question[] SecondEraQuestions = new[]
+        {
+            new Question
+            ("Год начала НЭП...",
+                "1920г.",
+                "1549г.",
+                "1533г.",
+                "1545г.",20),
+            new Question
+            ("Год смерти Иосифа Сталина...",
+                "1954г.",
+                "1552г.",
+                "1554г.",
+                "1548г.", 20),
+            new Question
+            ("Дата начала Великой отечественной войны...",
+                "1941",
+                "10 лет",
+                "11 лет",
+                "5 лет", 20),
 
         };
     }
