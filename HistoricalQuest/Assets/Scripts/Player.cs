@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private int hp = 5;
     private int rightAnswers = 0;
     public bool canMove = true;
+    
     private bool iswalking = false;
     [SerializeField] private const float SPEED = 0.05f;
     
@@ -17,7 +18,12 @@ public class Player : MonoBehaviour
     [SerializeField]private Animator animator;
     public static Player Instance { get; set; }
     public event Action hpChanged; 
-    public event Action answersChanged; 
+    public event Action answersChanged;
+
+    private void Awake()
+    {
+        
+    }
 
     public int Hp
     {
@@ -65,4 +71,5 @@ public class Player : MonoBehaviour
 
         
     }
+   
 }

@@ -7,15 +7,6 @@ public class CameraController : MonoBehaviour
     
         [SerializeField] private Transform cameraTarget;
         private Vector3 pos;
-        private void Awake()
-        {
-
-        }
-        void Start()
-        {
-
-        }
-
 
         void Update()
         {
