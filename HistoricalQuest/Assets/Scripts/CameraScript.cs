@@ -6,15 +6,6 @@ public class CameraScript : MonoBehaviour
 {
     [SerializeField] private Transform cameratarget;
     private Vector3 pos;
-    private void Awake()
-    {
-
-    }
-    void Start()
-    {
-
-    }
-
 
     void Update()
     {

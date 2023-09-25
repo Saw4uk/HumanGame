@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -32,12 +34,11 @@ public class GameOverPanelLogic : MonoBehaviour
     private void OnExitButtonClick()
     {
         Application.Quit();
-        gameObject.SetActive(false);
     }
 
     private void OnRestartButtonClick()
     {
+        Victorina.SetDefaults();
         SceneManager.LoadScene("SampleScene");
-        gameObject.SetActive(false);
     }
 }

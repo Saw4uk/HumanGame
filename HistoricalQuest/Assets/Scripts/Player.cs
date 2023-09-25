@@ -7,23 +7,18 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
-    private int hp = 5;
-    private int rightAnswers = 0;
+    private int hp = 3;
+    private int rightAnswers;
     public bool canMove = true;
     
-    private bool iswalking = false;
-    [SerializeField] private const float SPEED = 0.05f;
+    private bool isWalking;
+    private const float SPEED = 0.05f;
     
     
     [SerializeField]private Animator animator;
-    public static Player Instance { get; set; }
+    
     public event Action hpChanged; 
     public event Action answersChanged;
-
-    private void Awake()
-    {
-        
-    }
 
     public int Hp
     {
@@ -46,25 +41,25 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (canMove)
+        if (canMove && Game.Instance != null && Game.Instance.IsGameOver != true)
         {
             var deltaX = 0f;
             if (Input.GetKey(KeyCode.D))
             {
                 deltaX += SPEED;
-                iswalking = true;
+                isWalking = true;
                 transform.localScale = new Vector2(1,1);
             }
             else if (Input.GetKey(KeyCode.A))
             {
                 deltaX -= SPEED;
-                iswalking = true;
+                isWalking = true;
                 transform.localScale = new Vector2(-1, 1);
             }
-            else iswalking = false;
+            else isWalking = false;
             transform.position = new Vector2(transform.position.x + deltaX, transform.position.y);
 
-            animator.SetBool("iswalking", iswalking);
+            animator.SetBool("iswalking", isWalking);
 
         }
         else animator.SetBool("iswalking", false);

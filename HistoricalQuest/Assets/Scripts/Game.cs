@@ -18,6 +18,8 @@ public class Game : MonoBehaviour
     private bool isWaitingAnswer;
     private bool isAnswerGetted;
     private bool isGameOver = true;
+    
+    public static Game Instance { get; set; }
 
     public bool IsGameOver
     {
@@ -47,11 +49,7 @@ public class Game : MonoBehaviour
     //
     void Awake()
     {
-        Victorina.GameOver += delegate
-        {
-            SetDefaults();
-            IsGameOver = true;
-        };
+        Victorina.GameOver += OnGameOver;
         player.hpChanged+= delegate
         {
             if (player.Hp == 0)
@@ -59,6 +57,7 @@ public class Game : MonoBehaviour
                 IsGameOver = true;
             }
         };
+        Instance = this;
     }
 
     // Update is called once per frame
@@ -124,6 +123,11 @@ public class Game : MonoBehaviour
             str= $"Ваша слабость - {ParseVek(vek.Key)} век, вы допустили в нем наибольшее количество ошибок - {vek.Value}." +
                   $" Вы ответили правильно ответили на {player.RightAnswers} вопросов из {questionsOnEraAmount * 3}";
         }
+
+        if (vek.Key == 0)
+        {
+            str= $"Вы - молодец, вы все правильно ответили, страна вами гордится!";
+        }
         gameOverPanelLogic.DrawExit(str);
     }
 
@@ -172,11 +176,11 @@ public class Game : MonoBehaviour
             case 20:
                 return "XX";
             default:
-                return "";
+                return "Никакой";
         }
     }
     
-    private void SetDefaults()
+    public void SetDefaults()
     {
         currentEra = 0;
         eraCounter = 0;
@@ -186,6 +190,12 @@ public class Game : MonoBehaviour
     {
         button.interactable = interactable;
         button.GetComponent<Image>().color = color;
+    }
+
+    private void OnGameOver()
+    {
+        SetDefaults();
+        IsGameOver = true;
     }
     public void CheckAnswer(Button button, Button[] otherButtons)
     {
@@ -224,5 +234,10 @@ public class Game : MonoBehaviour
             btn.interactable= false;
         }
         button.interactable = false;
+    }
+
+    private void OnDestroy()
+    {
+        Victorina.GameOver -= OnGameOver;
     }
 }
